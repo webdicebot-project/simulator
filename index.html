@@ -1,169 +1,191 @@
 <!DOCTYPE html>
 <html lang="en">
-
-<head>
+  <head>
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width,initial-scale=1.0,shrink-to-fit=no" />
+    <meta
+      name="viewport"
+      content="width=device-width,initial-scale=1.0,shrink-to-fit=no"
+    />
     <meta name="robots" content="all" />
     <meta name="author" content="webdicebot@gmail.com" />
     <title>Dice Simulator</title>
     <link rel="icon" href="/favicon.ico" />
     <style>
-        .form-group {
-            margin-bottom: 1rem;
-        }
+      .form-group {
+        margin-bottom: 1rem;
+      }
     </style>
-</head>
+  </head>
 
-<body>
+  <body>
     <h1>Dice Simulator</h1>
 
     <p>
-        Only work for Web DiceBot, supports the script testing process and does not reflect actual profits when applied
-        to real dice sites
+      Only work for Web DiceBot, supports the script testing process and does
+      not reflect actual profits when applied to real dice sites
     </p>
 
     <h3>Config</h3>
     <div class="form-group">
-        <label for="Balance">Balance</label>
-        <input type="number" id="balance" value="100">
+      <label for="Balance">Balance</label>
+      <input type="number" id="balance" value="100" />
     </div>
 
     <div class="form-group">
-        <label for="Decimal">Decimal</label>
-        <input type="number" id="decimal" value="8">
+      <label for="Decimal">Decimal</label>
+      <input type="number" id="decimal" value="8" />
     </div>
 
     <div class="form-group">
-        <label for="clientSeed">Client Seed</label>
-        <input type="text" id="clientSeed">
-        <button onclick="simulator.randomClientSeed()">Random</button>
+      <label for="clientSeed">Client Seed</label>
+      <input type="text" id="clientSeed" />
+      <button onclick="simulator.randomClientSeed()">Random</button>
     </div>
 
     <div class="form-group">
-        <label for="clientSeed">Server Seed</label>
-        <input type="text" id="serverSeed">
-        <button onclick="simulator.randomServerSeed()">Random</button>
+      <label for="clientSeed">Server Seed</label>
+      <input type="text" id="serverSeed" />
+      <button onclick="simulator.randomServerSeed()">Random</button>
     </div>
 
     <div class="form-group">
-        <label for="clientSeed">Delay per bet (second)</label>
-        <input type="number" id="delay" value="0">
+      <label for="clientSeed">Delay per bet (second)</label>
+      <input type="number" id="delay" value="0" />
     </div>
 
     <script>
-        let simulator = {
-            balance: 100,
-            decimal: 8,
-            delay: 0,
-            clientSeed: randomSeed(16),
-            serverSeed: randomSeed(64),
-            nonce: 0,
-            randomClientSeed: function () {
-                this.clientSeed = randomSeed(16)
-                document.getElementById('clientSeed').value = this.clientSeed
-            },
-            randomServerSeed: function () {
-                this.serverSeed = randomSeed(64)
-                document.getElementById('serverSeed').value = this.serverSeed
-            },
-            roll: async function (amount, target, side) {
-                // console.log(amount, target, side)
-                if (amount < 0) return { msg: 'Amount must be greater than 0' }
-                if (target <= 0 || target > 9999) return { msg: 'Chance must be between 1 and 99' }
-                if (this.balance <= 0 || this.balance < amount) return { msg: 'Balance is not enough' }
-                const sides = ['over', 'under']
-                if (!sides.includes(side)) return { msg: 'Side must be over or under' }
-                target = target / 100
-                // console.log(target)
-                multiplier = 99 / target
-                this.nonce += 1
+      let simulator = {
+        balance: 100,
+        decimal: 8,
+        delay: 0,
+        clientSeed: randomSeed(16),
+        serverSeed: randomSeed(64),
+        nonce: 0,
+        randomClientSeed: function () {
+          this.clientSeed = randomSeed(16);
+          document.getElementById("clientSeed").value = this.clientSeed;
+        },
+        randomServerSeed: function () {
+          this.serverSeed = randomSeed(64);
+          document.getElementById("serverSeed").value = this.serverSeed;
+        },
+        roll: async function (amount, target, side) {
+          // console.log(amount, target, side)
+          if (amount < 0) return { msg: "Amount must be greater than 0" };
+          if (target <= 0 || target > 9999)
+            return { msg: "Target number must be between 1 and 9999" };
+          if (this.balance <= 0 || this.balance < amount)
+            return { msg: "Balance is not enough" };
+          const sides = ["over", "under"];
+          if (!sides.includes(side))
+            return { msg: "Side must be over or under" };
 
-                let win = false
-                let profit = 0
-                const resultNumber = await roll(this.serverSeed, this.clientSeed, this.nonce)
-                // console.log(resultNumber)
+          this.nonce += 1;
 
-                if (side === 'over') {
-                    resultNumber > target ? win = true : win = false
-                } else {
-                    resultNumber < target ? win = true : win = false
-                }
+          let win = false;
+          let profit = 0;
+          const resultNumber = await roll(
+            this.serverSeed,
+            this.clientSeed,
+            this.nonce
+          );
+          // console.log("target", target);
+          // console.log("resultNumber", resultNumber);
 
-                // console.log(win, resultNumber)
+          if (side === "over") {
+            resultNumber > target ? (win = true) : (win = false);
+            multiplier = 9999 / (9999 - target);
+          } else {
+            resultNumber < target ? (win = true) : (win = false);
+            multiplier = 9999 / target;
+          }
 
-                if (win) {
-                    profit = (amount * multiplier) - amount
-                } else {
-                    profit = 0 - amount
-                }
+          // console.log("multiplier", multiplier);
 
-                this.balance += profit
-                document.getElementById('balance').value = this.balance
+          if (win) {
+            profit = amount * multiplier - amount;
+          } else {
+            profit = 0 - amount;
+          }
 
-                return { profit, resultNumber, nonce: this.nonce }
-            },
+          this.balance += profit;
+          document.getElementById("balance").value = this.balance;
+
+          return { profit, resultNumber, nonce: this.nonce };
+        },
+      };
+
+      document
+        .getElementById("balance")
+        .addEventListener("input", function (event) {
+          simulator.balance = Number(event.target.value);
+        });
+
+      document
+        .getElementById("decimal")
+        .addEventListener("input", function (event) {
+          simulator.decimal = Number(event.target.value);
+        });
+
+      document
+        .getElementById("delay")
+        .addEventListener("input", function (event) {
+          simulator.delay = Number(event.target.value);
+        });
+
+      document.getElementById("clientSeed").value = simulator.clientSeed;
+      document.getElementById("serverSeed").value = simulator.serverSeed;
+
+      async function roll(serverSeed, clientSeed, nonce) {
+        const nonceClientSeed = `${clientSeed}-${nonce}`;
+
+        const encoder = new TextEncoder();
+        const key = await crypto.subtle.importKey(
+          "raw",
+          encoder.encode(serverSeed),
+          { name: "HMAC", hash: { name: "SHA-512" } },
+          false,
+          ["sign"]
+        );
+
+        const signature = await crypto.subtle.sign(
+          "HMAC",
+          key,
+          encoder.encode(nonceClientSeed)
+        );
+        const hashArray = Array.from(new Uint8Array(signature));
+        const hex = hashArray
+          .map((b) => b.toString(16).padStart(2, "0"))
+          .join("");
+
+        let index = 0;
+        let lucky = parseInt(hex.substring(index * 5, index * 5 + 5), 16);
+
+        while (lucky >= 1e6) {
+          index += 1;
+          lucky = parseInt(hex.substring(index * 5, index * 5 + 5), 16);
+          if (index * 5 + 5 > 128) {
+            lucky = 9999;
+            break;
+          }
         }
 
-        document.getElementById('balance').addEventListener('input', function (event) {
-            simulator.balance = Number(event.target.value)
-        })
+        return lucky % 10000;
+      }
 
-        document.getElementById('decimal').addEventListener('input', function (event) {
-            simulator.decimal = Number(event.target.value)
-        })
-
-        document.getElementById('delay').addEventListener('input', function (event) {
-            simulator.delay = Number(event.target.value)
-        })
-
-        document.getElementById('clientSeed').value = simulator.clientSeed
-        document.getElementById('serverSeed').value = simulator.serverSeed
-
-        async function roll(serverSeed, clientSeed, nonce) {
-
-            const nonceClientSeed = `${clientSeed}-${nonce}`;
-
-            const encoder = new TextEncoder();
-            const key = await crypto.subtle.importKey(
-                "raw",
-                encoder.encode(serverSeed),
-                { name: "HMAC", hash: { name: "SHA-512" } },
-                false,
-                ["sign"]
-            );
-
-            const signature = await crypto.subtle.sign("HMAC", key, encoder.encode(nonceClientSeed));
-            const hashArray = Array.from(new Uint8Array(signature));
-            const hex = hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
-
-            let index = 0;
-            let lucky = parseInt(hex.substring(index * 5, index * 5 + 5), 16);
-
-            while (lucky >= 1e6) {
-                index += 1;
-                lucky = parseInt(hex.substring(index * 5, index * 5 + 5), 16);
-                if (index * 5 + 5 > 128) {
-                    lucky = 9999;
-                    break;
-                }
-            }
-
-            return (lucky % 10000) / 100;
+      function randomSeed(length) {
+        let result = "";
+        const characters = "abcdef0123456789";
+        const charactersLength = characters.length;
+        let counter = 0;
+        while (counter < length) {
+          result += characters.charAt(
+            Math.floor(Math.random() * charactersLength)
+          );
+          counter += 1;
         }
-
-        function randomSeed(length) {
-            let result = '';
-            const characters = 'abcdef0123456789';
-            const charactersLength = characters.length;
-            let counter = 0;
-            while (counter < length) {
-                result += characters.charAt(Math.floor(Math.random() * charactersLength));
-                counter += 1;
-            }
-            return result;
-        }
+        return result;
+      }
     </script>
-</body>
-
+  </body>
 </html>
