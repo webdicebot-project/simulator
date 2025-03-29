@@ -21,6 +21,10 @@
         margin-bottom: 36px;
       }
 
+      .text-brand {
+        color: #f9b115;
+      }
+
       .form-group {
         margin-bottom: 1rem;
       }
@@ -33,7 +37,7 @@
 
   <body>
     <div class="top">
-      <h1>Welcome to Dice Simulator</h1>
+      <h1>Welcome to <span class="text-brand">Dice Simulator</span></h1>
 
       <p>
         A tool for testing your script. It only supports the script testing
@@ -54,6 +58,11 @@
     </div>
 
     <div class="form-group">
+      <label for="clientSeed">Delay per bet</label>
+      <input class="form-number" type="number" id="delay" value="0" /> seconds
+    </div>
+
+    <div class="form-group">
       <label for="clientSeed">Client Seed</label>
       <input type="text" id="clientSeed" />
       <button onclick="simulator.randomClientSeed()">Random</button>
@@ -63,11 +72,6 @@
       <label for="clientSeed">Server Seed</label>
       <input type="text" id="serverSeed" />
       <button onclick="simulator.randomServerSeed()">Random</button>
-    </div>
-
-    <div class="form-group">
-      <label for="clientSeed">Delay per bet</label>
-      <input class="form-number" type="number" id="delay" value="0" /> seconds
     </div>
 
     <script>
