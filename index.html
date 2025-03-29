@@ -14,31 +14,43 @@
       html,
       body {
         font-family: Courier New, monospace;
+        line-height: 1.5;
+      }
+
+      .top {
+        margin-bottom: 36px;
       }
 
       .form-group {
         margin-bottom: 1rem;
       }
+
+      .form-number {
+        width: 100px;
+      }
     </style>
   </head>
 
   <body>
-    <h1>Dice Simulator</h1>
+    <div class="top">
+      <h1>Welcome to Dice Simulator</h1>
 
-    <p>
-      Only work for Web DiceBot, supports the script testing process and does
-      not reflect actual profits when applied to real dice sites
-    </p>
+      <p>
+        A tool for testing your script. It only supports the script testing
+        process and does not reflect actual profits when applied to real dice
+        sites
+      </p>
+    </div>
 
     <h3>Config</h3>
     <div class="form-group">
       <label for="Balance">Balance</label>
-      <input type="number" id="balance" value="100" />
+      <input class="form-number" type="number" id="balance" value="100" />
     </div>
 
     <div class="form-group">
       <label for="Decimal">Decimal</label>
-      <input type="number" id="decimal" value="8" />
+      <input class="form-number" type="number" id="decimal" value="8" />
     </div>
 
     <div class="form-group">
@@ -54,8 +66,8 @@
     </div>
 
     <div class="form-group">
-      <label for="clientSeed">Delay per bet (second)</label>
-      <input type="number" id="delay" value="0" />
+      <label for="clientSeed">Delay per bet</label>
+      <input class="form-number" type="number" id="delay" value="0" /> seconds
     </div>
 
     <script>
