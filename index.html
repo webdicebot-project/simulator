@@ -18,7 +18,22 @@
       }
 
       .top {
+        margin: auto;
+        text-align: center;
         margin-bottom: 36px;
+      }
+
+      .about {
+        padding-left: 36px;
+        padding-right: 36px;
+      }
+
+      .config {
+        width: 400px;
+        margin: auto;
+        padding: 20px;
+        border: 1px solid #ccc;
+        border-radius: 8px;
       }
 
       .text-brand {
@@ -39,39 +54,41 @@
     <div class="top">
       <h1>Welcome to <span class="text-brand">Dice Simulator</span></h1>
 
-      <p>
+      <p class="about">
         A tool for testing your script. It only supports the script testing
         process and does not reflect actual profits when applied to real dice
         sites
       </p>
     </div>
 
-    <h3>Config</h3>
-    <div class="form-group">
-      <label for="Balance">Balance</label>
-      <input class="form-number" type="number" id="balance" value="100" />
-    </div>
+    <div class="config">
+      <h3>Config</h3>
+      <div class="form-group">
+        <label for="Balance">Balance</label>
+        <input class="form-number" type="number" id="balance" value="100" />
+      </div>
 
-    <div class="form-group">
-      <label for="Decimal">Decimal</label>
-      <input class="form-number" type="number" id="decimal" value="8" />
-    </div>
+      <div class="form-group">
+        <label for="Decimal">Decimal</label>
+        <input class="form-number" type="number" id="decimal" value="8" />
+      </div>
 
-    <div class="form-group">
-      <label for="clientSeed">Delay per bet</label>
-      <input class="form-number" type="number" id="delay" value="0" /> seconds
-    </div>
+      <div class="form-group">
+        <label for="clientSeed">Delay per bet</label>
+        <input class="form-number" type="number" id="delay" value="0" /> seconds
+      </div>
 
-    <div class="form-group">
-      <label for="clientSeed">Client Seed</label>
-      <input type="text" id="clientSeed" />
-      <button onclick="simulator.randomClientSeed()">Random</button>
-    </div>
+      <div class="form-group">
+        <label for="clientSeed">Client Seed</label>
+        <input type="text" id="clientSeed" />
+        <button onclick="simulator.randomClientSeed()">Random</button>
+      </div>
 
-    <div class="form-group">
-      <label for="clientSeed">Server Seed</label>
-      <input type="text" id="serverSeed" />
-      <button onclick="simulator.randomServerSeed()">Random</button>
+      <div class="form-group">
+        <label for="clientSeed">Server Seed</label>
+        <input type="text" id="serverSeed" />
+        <button onclick="simulator.randomServerSeed()">Random</button>
+      </div>
     </div>
 
     <script>
