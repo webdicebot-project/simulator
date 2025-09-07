@@ -111,7 +111,7 @@
                 <button
                   class="btn btn-outline-secondary"
                   type="button"
-                  onclick="simulator.randomClientSeed()"
+                  data-bs-action="randomClientSeed"
                 >
                   Random
                 </button>
@@ -125,7 +125,7 @@
                 <button
                   class="btn btn-outline-secondary"
                   type="button"
-                  onclick="simulator.randomServerSeed()"
+                  data-bs-action="randomServerSeed"
                 >
                   Random
                 </button>
@@ -204,33 +204,42 @@
         },
       };
 
-      document
-        .getElementById("balance")
-        .addEventListener("input", function (event) {
-          simulator.balance = Number(event.target.value);
+      // Bootstrap-style event handling using event delegation
+      document.addEventListener("DOMContentLoaded", function () {
+        // Initialize form values
+        document.getElementById("clientSeed").value = simulator.clientSeed;
+        document.getElementById("serverSeed").value = simulator.serverSeed;
+        document.getElementById("houseEdge").value = simulator.houseEdge;
+
+        // Event delegation for button clicks
+        document.addEventListener("click", function (event) {
+          const action = event.target.getAttribute("data-bs-action");
+          if (action && simulator[action]) {
+            simulator[action]();
+          }
         });
 
-      document
-        .getElementById("decimal")
-        .addEventListener("input", function (event) {
-          simulator.decimal = Number(event.target.value);
-        });
+        // Event delegation for input changes
+        document.addEventListener("input", function (event) {
+          const target = event.target;
+          const id = target.id;
 
-      document
-        .getElementById("delay")
-        .addEventListener("input", function (event) {
-          simulator.delay = Number(event.target.value);
+          switch (id) {
+            case "balance":
+              simulator.balance = Number(target.value);
+              break;
+            case "decimal":
+              simulator.decimal = Number(target.value);
+              break;
+            case "delay":
+              simulator.delay = Number(target.value);
+              break;
+            case "houseEdge":
+              simulator.houseEdge = Number(target.value);
+              break;
+          }
         });
-
-      document.getElementById("clientSeed").value = simulator.clientSeed;
-      document.getElementById("serverSeed").value = simulator.serverSeed;
-
-      document.getElementById("houseEdge").value = simulator.houseEdge;
-      document
-        .getElementById("houseEdge")
-        .addEventListener("input", function (event) {
-          simulator.houseEdge = Number(event.target.value);
-        });
+      });
 
       async function roll(serverSeed, clientSeed, nonce) {
         const nonceClientSeed = `${clientSeed}-${nonce}`;
