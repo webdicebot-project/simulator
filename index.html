@@ -8,7 +8,7 @@
     />
     <meta name="robots" content="all" />
     <meta name="author" content="webdicebot@gmail.com" />
-    <title>Dice Simulator</title>
+    <title>Dice Simulator - product of Web DiceBot</title>
     <link rel="icon" href="/favicon.ico" />
     <!-- Bootstrap 5 CSS -->
     <link
@@ -18,31 +18,33 @@
     <style>
       body {
         font-family: "Courier New", monospace;
-        background-color: #f8f9fa;
+        background: #fff3e0;
+      }
+
+      .bg-header {
+        background: #f57c00;
       }
 
       .text-brand {
-        color: #f9b115;
+        color: #f57c00;
+        font-weight: bold;
       }
 
       .config-card {
         max-width: 500px;
         margin: 0 auto;
       }
-
-      .form-number {
-        max-width: 120px;
-      }
     </style>
   </head>
 
   <body>
-    <div class="container py-5">
-      <div class="text-center mb-5">
-        <h1 class="display-4">
-          Welcome to <span class="text-brand">Dice Simulator</span>
+    <div class="container py-4 pt-5">
+      <div class="text-center mb-4">
+        <h1 class="display-5">
+          Welcome to
+          <span class="text-brand">Dice Simulator</span>
         </h1>
-        <p class="lead text-muted mx-auto" style="max-width: 600px">
+        <p class="lead mx-auto" style="max-width: 600px">
           A tool for testing your script. It only supports the script testing
           process and does not reflect actual profits when applied to real dice
           sites
@@ -50,7 +52,7 @@
       </div>
 
       <div class="card config-card shadow">
-        <div class="card-header bg-primary text-white">
+        <div class="card-header bg-header text-white">
           <h3 class="card-title mb-0">Configuration</h3>
         </div>
         <div class="card-body">
